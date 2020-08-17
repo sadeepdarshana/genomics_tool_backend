@@ -5,11 +5,8 @@ from itertools import product
 
 
 
-def process(path):
-    file=SeqIO.parse(path, "fasta")
-
-    result = []
-    for i in file:
-        seq = str(i.seq)
-        result.append((seq.count("A")+seq.count("a"), (seq.count("C")+seq.count("c")), (seq.count("G")+seq.count("g")), (seq.count("T")+seq.count("t"))))
-    return result
+def process(data):
+    data['a'] = data['sequence'].map(lambda x: x.count("A")+x.count("a"))
+    data['c'] = data['sequence'].map(lambda x: x.count("C")+x.count("c"))
+    data['g'] = data['sequence'].map(lambda x: x.count("G")+x.count("g"))
+    data['t'] = data['sequence'].map(lambda x: x.count("T")+x.count("t"))

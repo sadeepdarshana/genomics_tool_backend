@@ -1,6 +1,7 @@
 import threading
 import os
 import random
+import pandas as pd
 
 processed_path = None
 map_size = None
@@ -30,8 +31,8 @@ def bin_search(key, a, b):
 
 def process(data):
     global map_size, map_file_ptr, count, accessions, result
-    count = len(data)
-    accessions = data
+    count = data.shape[0]
+    accessions = data['accession']
     result = {}
     map_paths = ["./mapper/data/nucl_gb"]
     for map_path in map_paths:
@@ -42,7 +43,7 @@ def process(data):
             if i not in result or result[i] == -1:
                 result[i] = bin_search(accessions[i], 0, map_size)
 
-    return [result[x] for x in range(len(data))]
+    data['taxid'] = pd.Series([result[x] for x in range(len(data))])
 
 
 

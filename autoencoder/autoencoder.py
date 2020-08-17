@@ -28,11 +28,31 @@ def get_result_points(model, vectors):
     points = mapping_function(vectors)[0]
     return points
 
-def process(vectors, epochs, activation, layers_sizes, train_perc):
+def process(data, epochs, activation, layers_sizes, train_perc):
     model = build_model(layers_sizes,activation)
-    np_vectors = np.array(vectors).astype(np.float32)
-    normalize_over_axis1(np_vectors)
-    train_set = np_vectors[np.random.choice(np_vectors.shape[0], int(np_vectors.shape[0] * train_perc), replace=False)]
-    np.random.shuffle(train_set)
-    train(model,epochs,train_set)
-    return get_result_points(model, np_vectors)
+
+    train_mask = np.random.rand(data.shape[0]) < train_perc
+    data.loc[train_mask,'sampled'] = True
+    data.loc[~train_mask,'sampled'] = False
+
+    train_vectors = np.array(data[train_mask]['vector'].to_list()).astype(np.float32)
+    normalize_over_axis1(train_vectors)
+    np.random.shuffle(train_vectors)
+    train(model,epochs,train_vectors)
+
+    predict_list = []
+    for i in range(data.shape[0]):
+        if data['sampled'][i]:
+            predict_list.append(data['vector'][i])
+    predict_vectors = np.array(predict_list).astype(np.float32)
+    normalize_over_axis1(predict_vectors)
+    points = get_result_points(model, predict_vectors)
+    pointer = 0
+    data['a0'] = 0
+    data['a1'] = 0
+    data['a2'] = 0
+    for i in range(data.shape[0]):
+        if data['sampled'][i]:
+            for c in range(len(points[pointer])):
+                data.loc[i,'a'+str(c)] = points[pointer][c]
+            pointer+=1

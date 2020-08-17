@@ -1,4 +1,4 @@
-
+import pandas as pd
 data_path = './taxonomy/data/rankedlineage.dmp'
 
 file = open(data_path, encoding='utf-8')
@@ -14,10 +14,12 @@ def load_to_memory():
         i += 1
         line_components = [i.replace('\t', '').strip() for i in line.split('|')]
         lineage[int(line_components[0])] = line_components[2:-1]
+        if lineage[int(line_components[0])][0] == '': lineage[int(line_components[0])][0] = line_components[1]
 
 
 def process(data):
     load_to_memory()
-    return [lineage[x] if x in lineage else None for x in data]
+    lineages =  [lineage[x] if x in lineage else ['']*8 for x in data['taxid']]
 
-
+    for i in range(8):
+        data['lin_'+str(i)] = pd.Series([lineages[x][i] for x in range(data.shape[0])])
