@@ -34,3 +34,6 @@ def process_ae(input_fasta_path, k, epochs, activation, layers_sizes, train_perc
     data.drop('sequence', axis=1, inplace=True)
     data.drop('vector', axis=1, inplace=True)
     return data
+
+
+l=process('E:/Downloads/50-100_clostro0.75_rubro0.20_erythro_0.05.txt', 3, 150, 'sigmoid', [32,3,32],.6)

@@ -41,7 +41,10 @@ def process(data):
 
         for i in range (count):
             if i not in result or result[i] == -1:
-                result[i] = bin_search(accessions[i], 0, map_size)
+                if accessions[i] != -1:
+                    result[i] = bin_search(accessions[i], 0, map_size)
+                else:
+                    result[i] = -1
 
     data['taxid'] = pd.Series([result[x] for x in range(len(data))])
 
