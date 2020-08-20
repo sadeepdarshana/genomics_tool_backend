@@ -19,7 +19,7 @@ def load_to_memory():
 
 def process(data):
     load_to_memory()
-    lineages =  [lineage[x] if x in lineage else ['']*8 for x in data['taxid']]
+    lineages =  [lineage[x] if x in lineage else ['UNKNOWN']*8 for x in data['taxid']]
 
     for i in range(8):
         data['lin_'+str(i)] = pd.Series([lineages[x][i] for x in range(data.shape[0])])

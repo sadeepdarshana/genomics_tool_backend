@@ -13,3 +13,51 @@ NM_001000000
 269 000 000 gb
 
 6:44:30
+
+The {name} consists of several tools that are used to process the input sequences.
+These tools, together, convert the raw DNA sequences to a meaningful representation that can
+help the {biologists?} to understand and extract information about the sequences.
+This process of converting raw sequences into meaningful information can be thought of as a pipeline.
+
+Pipeline stage 1
+The first step of the pipeline is to read sequence data from the given FASTA file.
+The tool internally uses the python module SeqIO which is a part of BioPython to parse the FASTA file.
+
+Pipeline stage 2
+In the next stage each read is vectorized by obtaining its oligonucleotide (a.k.a K-mer) frequencies.
+Formally, for a given K-mer length k, the number of K-mers with a length of k is counted in each read. This gives us a
+4^k dimensional vector. This is reduced in dimensionality by approximatelly half by considering the counts of each K-mer and
+its reverse compliment as a single entity.
+
+Piepeline stage 3
+The number of occerrences of each letter is counted per read in this stage.
+
+Pipeline stage 4
+We use blast to search each read against a database of known sequences. This returns us the accession id of the closest match for
+a sequence.
+
+Pipeline stage 5
+In this stage the accession id obtained for each read through blast is used to determine its taxanomy id.
+
+Pipeline stage 6
+We use the NCBI taxanoy databases to obtain the taxanomic classes in different levels of the species each read belongs to.
+
+Pipeline stage 7
+The oligonucleotide frequency vectors of reads are used to train an autoencoder. This autoencoder is then used obtain a lower dimensional
+representation of each vector.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
