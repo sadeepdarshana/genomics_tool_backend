@@ -29,12 +29,12 @@ def bin_search(key, a, b):
     return read_value(mid_point)
 
 
-def process(data):
+def process(config, data):
     global map_size, map_file_ptr, count, accessions, result
     count = data.shape[0]
     accessions = data['accession']
     result = {}
-    map_paths = ["./mapper/data/nucl_gb"]
+    map_paths = [config['mapper_data_directory'] +'/'+ i for i in config['mapper_data_filenames'].replace('"','').split()]
     for map_path in map_paths:
         map_size = os.path.getsize(map_path) // 22
         map_file_ptr = open(map_path, "rb")

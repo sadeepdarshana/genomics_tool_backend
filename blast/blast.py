@@ -4,10 +4,10 @@ from io import StringIO
 import pandas as pd
 
 
-blast_db = './blast/data/data.fasta'
 
-def process(data, input_fasta_path):
 
+def process(config, data, input_fasta_path):
+    blast_db = config['blast_db_directory'] + "/" + config['blast_db_name']
     blastn_results_xml = NcbiblastnCommandline(query=input_fasta_path, db=blast_db, outfmt=5)()
     blastn_results = NCBIXML.parse(StringIO(blastn_results_xml[0]))
 

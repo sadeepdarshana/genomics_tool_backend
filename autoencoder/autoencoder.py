@@ -28,7 +28,7 @@ def get_result_points(model, vectors):
     points = mapping_function(vectors)[0]
     return points
 
-def process(data, epochs, activation, layers_sizes, train_perc):
+def process(config, data, epochs, activation, layers_sizes, train_perc):
     model = build_model(layers_sizes,activation)
 
     train_mask = np.random.rand(data.shape[0]) < train_perc
